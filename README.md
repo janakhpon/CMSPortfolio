@@ -16,34 +16,6 @@ Get into root folder
 
     cd Portfolio
 
-Install Dependencies using [npm](https://www.npmjs.com/)
+Start your local server and ready to go
 
-    npm install
-    npm i -d
-    npm start
-
-Install Dependencies using [yarn](https://yarnpkg.com/en/)
-
-    yarn install
-    yarn add
-    yarn start
-
-
-
-
-# Warning
-If u run into error use the following steps
-
-```bash
-sudo yarn install
-sudo yarn add
-sudo yarn start
-```
-or
-
-```bash
-sudo npm install
-sudo npm i -d
-sudo npm start
-```
 
