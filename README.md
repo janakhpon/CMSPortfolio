@@ -1,5 +1,5 @@
 # Portfolio (Beta)
-  Portfolio is generally built for my resume/portfolio template written on PHP and MYSQL. It has the CRUD functionality to my new projects on Portfolio projects route.  Here is a deployed demo for [webdeploy](http://janakpon.tech)
+  Portfolio is generally built for my resume/portfolio template written on PHP and MYSQL. It has the CRUD functionality to my new projects on Portfolio projects route.  Here is a deployed demo for [Deploy](http://janakpon.tech)
 
 
 
