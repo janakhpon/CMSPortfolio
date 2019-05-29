@@ -10,11 +10,11 @@
 
 clone the repository
 
-    git clone https://github.com/janakhpon/Ei-sGallery.git
+    git clone https://github.com/janakhpon/Portfolio.git
 
 Get into root folder
 
-    cd Ei'sGallery
+    cd Portfolio
 
 Install Dependencies using [npm](https://www.npmjs.com/)
 
