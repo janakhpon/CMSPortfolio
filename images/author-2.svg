@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="961" viewBox="0 0 1300 961">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 72px;
+        fill: #010101;
+        text-anchor: middle;
+        font-family: "Cooper Black";
+      }
+
+      .cls-2 {
+        fill: #f5efef;
+        font-size: 95px;
+        font-family: "Copperplate Gothic Bold";
+      }
+    </style>
+  </defs>
+  <text id="J_A_N_A_K_H_P_O_N" data-name="J A N A K H  P O N" class="cls-1" x="205.421" y="23.988"><tspan x="205.421">J</tspan><tspan x="205.421" dy="86.4">A</tspan><tspan x="205.421" dy="86.4">N</tspan><tspan x="205.421" dy="86.4">A</tspan><tspan x="205.421" dy="86.4">K</tspan><tspan x="205.421" dy="86.4">H</tspan><tspan class="cls-2" x="205.421" dy="228">P</tspan><tspan class="cls-2" x="205.421" dy="114">O</tspan><tspan class="cls-2" x="205.421" dy="114">N</tspan></text>
+</svg>
