@@ -53,7 +53,7 @@
                 <li><a href="Page_services.php"><span><small>03</small>Services</span></a></li>
                 <li><a href="Page_portfolio.php"><span><small>04</small>Portfolio</span></a></li>
 								<li><a href="Page_contact.php"><span><small>05</small>Contact</span></a></li>
-								<li><a href="Page_auth.php"><span><small>06</small>Auth</span></a></li>
+								<li><a href="Page_login.php"><span><small>06</small>Login</span></a></li>
                 <li><a href="Page_projects.php"><span><small>07</small>Projects</span></a></li>
               </ul>
             </div>

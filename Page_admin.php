@@ -39,9 +39,9 @@
 
 
               <div class="col-md-6 pr-md-5">
-                <form method="post" action="func_insert.php" enctype="multipart/form-data">
+                <form method="post" role="form"  enctype="multipart/form-data">
                   <div class="form-group">
-                    <input type="text"  class="form-control" name="image" placeholder="Image URL">
+                    <input type="File" id="upload_image" class="form-control"  name="image" placeholder="Image File" required>
                   </div>
                   <div class="form-group">
                     <input type="text" class="form-control" name="language" placeholder="Main Language">
@@ -59,6 +59,9 @@
 
 
                 <div class="col-md-6 pr-md-5">
+
+                <?php validate_project_insertion(); ?>
+
 
                   <div class="form-group">
                     <select class="form-control" name="hosted">

@@ -3,11 +3,11 @@
       <section class="ftco-section contact-section">
         <div class="container mt-5">
 
-        <div class="col-lg-6 col-lg-offset-3">
+        
 
-          <?php validate_user_registration(); ?>
+        
             
-        </div>
+        
 
           <div class="row block-9">
 
@@ -37,6 +37,16 @@
 
 
               </div>
+              <div class="col-md-6 pr-md-5">
+
+
+                  
+                  <?php validate_user_registration(); ?>
+                  
+                  
+                </form>
+              </div>
+
 
 
             

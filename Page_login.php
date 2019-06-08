@@ -8,8 +8,16 @@
 
 
 
+          
 
 
+          <div class="col-md-6 pr-md-5">
+          <?php
+		  	display_message();
+			  validate_user_login();
+
+			    ?>
+          </div>
 
             <div class="col-md-6 pr-md-5">
             <?php
@@ -17,12 +25,12 @@
                     ?>
 
 
-                    <form method="post" action="func_logout.php">
+                    <form method="post" action="logout.php">
 
                         <div class="form-group">
-                          <label>You'have already signed in to Admin mode!</label>
+                          <label>You have already signed in to Admin mode!</label>
                           <input type="submit" name="submit" value="LOG OUT" class="btn btn-primary py-3 px-5">
-                          <a class="btn btn-primary py-3 px-5" href="admin.php">MANAGE</a>
+                          <a class="btn btn-primary py-3 px-5" href="Page_admin.php">MANAGE</a>
                         </div>
 
                           
@@ -36,9 +44,9 @@
             ?>
 
 
-              <form method="post" action="func_signin.php">
+              <form id="login-form" method="post" role="form"">
                <div class="form-group">
-                  <input type="text" class="form-control" name="username" placeholder="Username" required>
+                  <input type="text" class="form-control" name="name" placeholder="Username" required>
                 </div>
                 <div class="form-group">
                   <input type="email" class="form-control" name="email" placeholder="Email" required>
