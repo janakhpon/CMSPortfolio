@@ -16,18 +16,22 @@
             </div>
           </div>
           <div class="row no-gutters">
+          <?php
+		  	display_message();
 
+			    ?>
 
           <?php
 
-            include('connection.php');
+            
             $user_id = $_SESSION['id'];
             $sql = "SELECT * FROM project WHERE user_id ='$user_id'";
-            if($result = mysqli_query($conn, $sql)){
+            $result = query($sql);
+            if (row_count($result) >= 1) {
+              
 
-                if(mysqli_num_rows($result)>0){
-                  
-                    while($row = mysqli_fetch_array($result)){
+              
+              while ($row = fetch_array($result)) {
                         $image = $row['image'];
                         $language = $row['language'];
                         $name = $row['name'];
@@ -36,36 +40,34 @@
                         $time = $row['date'];
                         $time = date_format (new DateTime($time), 'g:ia \o\n l jS F');
                         $link = $row['link'];
-                        
-                        echo "
-                    <div class='block-3 d-md-flex ftco-animate'>
+                        $display = <<<DELIMITER
+
+                        <div class="block-3 d-md-flex ftco-animate" data-scrollax-parent="true">
+                        <a href="uploads/$image" class="image d-flex justify-content-center align-items-center" style="background-image: url('uploads/$image'); width:25rem; height:25rem; "
+                          data-scrollax=" properties: { translateY: '-30%'}">
+                          <div class="icon d-flex text-center justify-content-center align-items-center">
+                            <span class="icon-search"></span>
+                          </div>
+                        </a>
+                        <div class="text">
+                          <h4 class="subheading">$time</h4>
+                          <h2 class="heading"><a href="#">$language</a></h2>
+                          <p> $description </p>
+                          
+                          <p><a href="$link">$name|Hosted:$hosted</a></p>
+                        </div>
+                      </div>
+DELIMITER;
 
 
-
-                    <a href='$image' class='image d-flex justify-content-center align-items-center'
-                     style='background-image: url($image); '
-                    data-scrollax='properties: { translateY: '-30%'}'>
-                    <div class='icon d-flex text-center justify-content-center align-items-center'>
-                      <span class='icon-search'></span>
-                    </div>
-                  </a>
-                  <div class='text'>
-                    <h4 class='subheading'> <span>$time </span></h4>
-                    <h2 class='heading'><a href='$image'>$language</a></h2>
-                    <p>$description <br> Hosted: $hosted</p>
-                  
-                    <p><a href='$link'>$name</a></p>
-                  
-                    </div> 
-                    </div>";
-                    }
-                }else{
-                    echo '<div class="alert alert-warning">There is no projects on list! Sorry</div>'; exit;
-                }
+                echo $display;
+            }
+          
+                
                 
             }else{
                 echo '<div class="alert alert-warning">An error occured!</div>'; exit;
-            //    echo "ERROR: Unable to excecute: $sql." . mysqli_error($link);
+           
             }
 
             ?>

@@ -8693,6 +8693,19 @@ textarea.form-control {
     color: #121212;
     font-style: italic; }
 
+    
+#upload_image{
+  padding: 0.5rem;
+  opacity: 0.2;
+  text-align: center;
+
+}
+
+#upload_image:hover{
+  cursor: pointer;
+}
+
+
 #ftco-loader {
   position: fixed;
   width: 96px;
@@ -8783,3 +8796,4 @@ textarea.form-control {
   100% {
     stroke-dasharray: 89, 200;
     stroke-dashoffset: -136px; } }
+

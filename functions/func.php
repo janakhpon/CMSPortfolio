@@ -47,7 +47,7 @@ function validation_errors($error_message)
 
     $error_message = <<<DELIMITER
 
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-success bg-danger text-white small alert-dismissible fade show" role="alert">
                $error_message
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -111,7 +111,7 @@ function validate_user_registration()
 
     $errors = [];
     $min = 3;
-    $max = 20;
+    $max = 30;
 
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
@@ -161,12 +161,22 @@ function validate_user_registration()
         } else {
             if (register_user($name, $email, $password)) {
 
-                set_message("<div class='alert alert-success' role='alert'>Check your email or in spam folder for activation link</div>");
-                redirect("index.php");
+                set_message("<div class='alert alert-success bg-success text-white small alert-dismissible fade show' role='alert'>
+               Your account is registered now! Please login here
+                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                     <span aria-hidden='true'>&times;</span>
+                 </button>
+         </div>");
+                redirect("Page_login.php");
             } else {
 
-                set_message("<div class='alert alert-danger' role='alert'>Failed to register! Try again</div>");
-                redirect("index.php");
+                set_message("<div class='alert alert-success bg-success text-white small alert-dismissible fade show' role='alert'>
+                Failed to register!
+                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                      <span aria-hidden='true'>&times;</span>
+                  </button>
+             </div>");
+                redirect("Page_register.php");
             }
         }
     }
@@ -221,39 +231,7 @@ function register_user($name, $email, $password)
 
 
 
-/** ----------------------  = Start Activation functions = ---------------------- */
 
-
-function activate_user()
-{
-    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        if (isset($_GET['email'])) {
-            $email = clean($_GET['email']);
-            $validation = clean($_GET['code']);
-
-
-            $sql = "SELECT id from users WHERE email = '" . escape($_GET['email']) . "'AND validation_code = '" . escape($_GET['code']) . "'";
-            $result = query($sql);
-
-            if (row_count($result) == 1) {
-
-                $sql1 = "UPDATE users SET active = 1, validation_code = 0 WHERE email = '" . escape($email) . "' AND validation_code = '" . escape($validation) . "'";
-                $result1 = query($sql1);
-                confirm($result1);
-
-                set_message("<p class='bg-success   '>Your fucking acc is activated!</p>");
-                redirect("login.php");
-            } else {
-
-                echo "<p class='bg-danger'>Your fucking acc is not activated!</p>";
-            }
-        }
-    }
-}
-
-
-
-/** ----------------------  = End Activation functions = ---------------------- */
 
 /** ----------------------  = Start Validate Login functions = ---------------------- */
 
@@ -266,11 +244,14 @@ function validate_user_login()
 
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
+        $name = clean($_POST['name']);
         $email = clean($_POST['email']);
         $password = clean($_POST['password']);
-        $remember = isset($_POST['remember']);
 
 
+        if (empty($name)) {
+            $name[] = "Name can't be blanked!";
+        }
 
         if (empty($email)) {
             $errors[] = "Email can't be blanked!";
@@ -290,9 +271,9 @@ function validate_user_login()
             }
         } else {
 
-            if (login_user($email, $password, $remember)) {
+            if (login_user($name, $email, $password)) {
 
-                redirect("admin.php");
+                redirect("Page_login.php");
             } else {
 
 
@@ -310,10 +291,10 @@ function validate_user_login()
 
 /** ----------------------  = Start login function = ---------------------- */
 
-function login_user($email, $password, $remember)
+function login_user($name, $email, $password)
 {
 
-    $sql = "SELECT password,id FROM users WHERE email = '" . escape($email) . "' AND active = 1";
+    $sql = "SELECT password,id FROM user WHERE email = '" . escape($email) . "' AND username = '".escape($name)."'";
     $result = query($sql);
 
     if (row_count($result) == 1) {
@@ -323,13 +304,10 @@ function login_user($email, $password, $remember)
 
         if (md5($password) == $db_password) {
 
-            if ($remember == "on") {
-
-                setcookie('email', $email, time() + 86400);
-            }
-
-
-            $_SESSION['email'] = $email;
+            $_SESSION['id'] = $row['id'];
+            $_SESSION['username'] = $row['username'];
+            $_SESSION['email'] = $row['email'];
+            $_SESSION['password'] = $row['password'];
 
             return true;
         } else {
@@ -347,6 +325,250 @@ function login_user($email, $password, $remember)
 /** ----------------------  = End login function = ---------------------- */
 
 
+/** ----------------------  = Project Validation functions = ---------------------- */
+
+function validate_project_insertion()
+{
+
+    $errors = [];
+    $min = 2;
+    $max = 30;
+    $Dmax = 40;
+    $lmin = 10;
+
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+
+        $image     = $_FILES["image"]["name"];
+        $target    = "uploads/".basename($_FILES["image"]["name"]);
+        $name = clean($_POST['name']);
+        $language = clean($_POST['language']);
+        $description = clean($_POST['description']);
+        $hosted = clean($_POST['hosted']);
+        $link = clean($_POST['link']);
+
+
+        if (strlen($name) < $min) {
+            $errors[] = "project name should not be less than {$min} characters";
+        }
+
+    
+
+        if (strlen($name) > $max) {
+            $errors[] = "project name should not be more than {$max} characters";
+        }
+
+
+        if (strlen($language) < $min) {
+            $errors[] = "Programming language name should not be less than {$min} characters";
+        }
+
+    
+
+        if (strlen($language) > $max) {
+            $errors[] = "Programming language name should not be more than {$max} characters";
+        }
+
+
+        if (strlen($description) < $Dmax) {
+            $errors[] = "Description should not be less than {$Dmax} characters";
+        }
+
+        if (strlen($link) < $lmin) {
+            $errors[] = "Address link should not be less than {$lmin} characters";
+        }
+
+        if(empty($image)){
+            $errors[] = " Image is not acceptable";
+        }
+      
+
+
+        if (!empty($errors)) {
+
+            foreach ($errors as $error) {
+
+                echo validation_errors($error);
+            }
+        } else {
+            if (insert_project($image,$target, $name, $language, $description, $hosted, $link )) {
+
+                set_message("<div class='alert alert-success bg-success text-white small alert-dismissible fade show' role='alert'>
+               Added to Project list !
+                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                     <span aria-hidden='true'>&times;</span>
+                 </button>
+         </div>");
+                redirect("Page_projects.php");
+            } else {
+
+                set_message("<div class='alert alert-success bg-success text-white small alert-dismissible fade show' role='alert'>
+                Failed to register!
+                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                      <span aria-hidden='true'>&times;</span>
+                  </button>
+             </div>");
+                redirect("Page_admin.php");
+            }
+        }
+    }
+}
+
+
+
+
+
+/** ----------------------  = End Project Validation functions = ---------------------- */
+
+
+/** ----------------------  = Start Project Insertion functions = ---------------------- */
+
+
+
+function insert_project($image,$target, $name, $language, $description, $hosted, $link)
+{
+
+    $image;
+    $target;
+    $user_id = $_SESSION['id'];
+    $name = escape($name);
+    $date = time();
+    $language = escape($language);
+    $description = escape($description);
+    $hosted = escape($hosted);
+    $link = escape($link);
+
+
+    
+
+        $sql = "INSERT INTO project (`user_id`, `image`, `language`,`name`, `description`, `hosted`,`date`, `link`)";
+        $sql .= " VALUES ($user_id, '$image', '$language', '$name', '$description', '$hosted', '$date', '$link')";
+        move_uploaded_file($_FILES["image"]["tmp_name"],$target);
+        $result = query($sql);
+
+        return true;
+    
+}
+
+
+
+
+
+
+
+
+/** ----------------------  = End Project Insertion functions = ---------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /** ----------------------  = Start logged session function = ---------------------- */
 
@@ -354,7 +576,6 @@ function login_user($email, $password, $remember)
 function logged_in()
 {
     if (isset($_SESSION['email']) || isset($_COOKIE['email'])) {
-
 
         return true;
     } else {
