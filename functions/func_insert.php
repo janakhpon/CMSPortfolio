@@ -28,7 +28,7 @@ if(isset($_POST['submit'])){
     if(!$result){
         echo 'error';
     }else{
-        header("Location:projects.php?");
+        header("Location:Page_projects.php?");
     }
 
 }

@@ -1,6 +1,7 @@
 <?php
 
-    include "connection.php";
+    include "db.php";
+
     if(isset($_POST['submit'])){
         $name = mysqli_real_escape_string($conn, $_POST['name']);
         $email = mysqli_real_escape_string($conn, $_POST['email']);
@@ -19,8 +20,6 @@
                 "INSERT INTO `user` (`username`, `email`, `password`)
                  VALUES('$name', '$email', '$hash');";
 
-    
-    
                  if(mysqli_query($conn, $sql2)){
                     header("Location:index.php?message=registration+success");
                  }else{
