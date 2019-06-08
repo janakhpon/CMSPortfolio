@@ -62,6 +62,11 @@ DELIMITER;
 
 
 
+
+
+
+
+
 function email_exists($email)
 {
 
@@ -90,6 +95,20 @@ function username_exists($username)
         return false;
     }
 }
+
+function subscriber_exists($email)
+{
+
+    $sql = "SELECT id from subscriber WHERE email = '$email'";
+    $result = query($sql);
+    if (row_count($result) == 1) {
+        return true;
+    } else {
+
+        return false;
+    }
+}
+
 
 
 
@@ -457,6 +476,311 @@ function insert_project($image,$target, $name, $language, $description, $hosted,
 
 
 /** ----------------------  = End Project Insertion functions = ---------------------- */
+
+
+
+
+
+
+/** ----------------------  = Subscriber Validation functions = ---------------------- */
+
+function validate_subscriber_registeration()
+{
+
+    $errors = [];
+    $min = 2;
+    $max  = 15;
+    $Mmax = 30;
+
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+
+        $name = clean($_POST['subscriber_name']);
+        $email = clean($_POST['subscriber_email']);
+       
+
+
+        if (strlen($name) < $min) {
+            $errors[] = "subscriber name should not be less than {$min} characters";
+        }
+
+    
+
+        if (strlen($name) > $max) {
+            $errors[] = "subscriber name should not be more than {$max} characters";
+        }
+
+
+        if (strlen($email) < $min) {
+            $errors[] = "subscriber email should not be less than {$min} characters";
+        }
+
+    
+
+        if (strlen($email) > $Mmax) {
+            $errors[] = "subscriber email should not be more than {$Mmax} characters";
+        }
+
+
+        if (subscriber_exists($email)) {
+
+            $errors[] = "this email is already subscribed. Sorry! ";
+            
+        } 
+        
+
+        if (!empty($errors)) {
+
+            foreach ($errors as $error) {
+
+                echo validation_errors($error);
+            }
+        } else {
+            if (subscriber_registration($name, $email)) {
+
+                set_message("<div class='alert alert-success bg-success text-white small alert-dismissible fade show' role='alert'>
+              Thank, subscribed to subscriber list!
+                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                     <span aria-hidden='true'>&times;</span>
+                 </button>
+         </div>");
+                redirect("Page_contact.php");
+            } else {
+
+                set_message("<div class='alert alert-success bg-success text-white small alert-dismissible fade show' role='alert'>
+                Failed to register!
+                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                      <span aria-hidden='true'>&times;</span>
+                  </button>
+             </div>");
+                redirect("Page_admin.php");
+            }
+        }
+    }
+}
+
+
+
+
+
+/** ----------------------  = Subscriber Validation functions = ---------------------- */
+
+
+/** ----------------------  = Subscriber registration functions = ---------------------- */
+
+
+
+function subscriber_registration($name, $email)
+{
+
+    $name = escape($name);
+    $email = escape($email);
+    $timestamp = time();
+
+
+    
+
+        $sql = "INSERT INTO subscriber (`name`, `email`,`time`)";
+        $sql .= " VALUES ('$name', '$email', '$timestamp')";
+        $result = query($sql);
+
+        $now = date("M,d,Y h:i:s A");
+        $to      =  $email;
+        $subject = 'From Janakh Pon';
+        $message = 'Hi there '.$name.'!, Thank u for subscribtion today at '.$now.'. Click here to check your status on janakhpon.tech website,http://www.janakhpon.tech/Page_display.php';
+        $headers = 'From: noreply@jtech.com' . "\r\n" .
+        'Reply-To: noreply@jtech.com' . "\r\n" .
+        'X-Mailer: PHP/' . phpversion();
+        mail($to, $subject, $message, $headers);
+
+        return true;
+    
+}
+
+
+
+
+
+
+
+
+/** ----------------------  = End Subscriber registration functions = ---------------------- */
+
+
+
+/** ----------------------  = Subscriber Validation functions = ---------------------- */
+
+function validate_feedback_registeration()
+{
+
+    $errors = [];
+    $min = 2;
+    $max  = 15;
+    $med = 20;
+    $Mmax = 30;
+
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+
+        $feed_name = clean($_POST['name']);
+        $feed_email = clean($_POST['email']);
+        $subject = clean($_POST['subject']);
+        $message = clean($_POST['message']);
+       
+
+
+        if (strlen($feed_name) < $min) {
+            $errors[] = "name should not be less than {$min} characters";
+        }
+
+    
+
+        if (strlen($feed_name) > $max) {
+            $errors[] = "name should not be more than {$max} characters";
+        }
+
+
+        if (strlen($feed_email) < $min) {
+            $errors[] = "email should not be less than {$min} characters";
+        }
+
+    
+
+        if (strlen($feed_email) > $Mmax) {
+            $errors[] = "email should not be more than {$Mmax} characters";
+        }
+
+
+        if (strlen($subject) < $min) {
+            $errors[] = "subject should not be less than {$min} characters";
+        }
+
+    
+
+        if (strlen($subject) > $Mmax) {
+            $errors[] = "subject should not be more than {$Mmax} characters";
+        }
+
+        if (strlen($message) < $med){
+            $errors[] = "message should not be less than {$med} characters";
+        }
+
+
+
+        
+
+        if (!empty($errors)) {
+
+            foreach ($errors as $error) {
+
+                echo validation_errors($error);
+            }
+        } else {
+            if (feedback_registration($feed_name, $feed_email, $subject, $message)) {
+
+                set_message("<div class='alert alert-success bg-success text-white small alert-dismissible fade show' role='alert'>
+              Thank you for your feedback,I appreciate to see how they think for making a better website!
+                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                     <span aria-hidden='true'>&times;</span>
+                 </button>
+         </div>");
+                redirect("Page_feedback.php");
+            } else {
+
+                set_message("<div class='alert alert-success bg-success text-white small alert-dismissible fade show' role='alert'>
+                Failed to register!
+                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                      <span aria-hidden='true'>&times;</span>
+                  </button>
+             </div>");
+                redirect("Page_admin.php");
+            }
+        }
+    }
+}
+
+
+
+
+
+/** ----------------------  = Subscriber Validation functions = ---------------------- */
+
+
+/** ----------------------  = Subscriber registration functions = ---------------------- */
+
+
+
+function feedback_registration($feed_name, $feed_email, $subject, $message)
+{
+
+    $name = escape($feed_name);
+    $email = escape($feed_email);
+    $subject = escape($subject);
+    $message = escape($message);
+    $timestamp = time();
+
+
+    
+
+        $sql = "INSERT INTO feedback (`name`, `email`,`subject`,`message`, `date`)";
+        $sql .= " VALUES ('$name', '$email', '$subject', '$message', '$timestamp')";
+        $result = query($sql);
+
+        $now = date("M,d,Y h:i:s A");
+        $to      =  $email;
+        $subject = 'From Janakh Pon';
+        $message = 'Hi there '.$name.'!, Thank u for feed today at '.$now.'. I love the way you suggested :: '.$message.'::. Click here to check your status on janakhpon.tech website,http://www.janakhpon.tech/Page_display.php';
+        $headers = 'From: noreply@jtech.com' . "\r\n" .
+        'Reply-To: noreply@jtech.com' . "\r\n" .
+        'X-Mailer: PHP/' . phpversion();
+        mail($to, $subject, $message, $headers);
+
+
+        return true;
+    
+}
+
+
+
+
+
+
+
+
+/** ----------------------  = End Subscriber registration functions = ---------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

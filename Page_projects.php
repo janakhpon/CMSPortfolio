@@ -32,6 +32,7 @@
 
               
               while ($row = fetch_array($result)) {
+                        $id = $row['id'];
                         $image = $row['image'];
                         $language = $row['language'];
                         $name = $row['name'];
@@ -40,27 +41,52 @@
                         $time = $row['date'];
                         $time = date_format (new DateTime($time), 'g:ia \o\n l jS F');
                         $link = $row['link'];
-                        $display = <<<DELIMITER
+                        $display;
+                        if($id % 2 == 0){
 
-                        <div class="block-3 d-md-flex ftco-animate" data-scrollax-parent="true">
-                        <a href="uploads/$image" class="image d-flex justify-content-center align-items-center" style="background-image: url('uploads/$image'); width:25rem; height:25rem; "
-                          data-scrollax=" properties: { translateY: '-30%'}">
-                          <div class="icon d-flex text-center justify-content-center align-items-center">
-                            <span class="icon-search"></span>
+                          $display1 = <<<DELIMITER
+
+                          <div class="block-3 d-md-flex ftco-animate" data-scrollax-parent="true">
+                          <a href="uploads/$image" class="image d-flex justify-content-center align-items-center" style="background-image: url('uploads/$image'); width:25rem; height:25rem; "
+                            data-scrollax=" properties: { translateY: '-30%'}">
+                            <div class="icon d-flex text-center justify-content-center align-items-center">
+                              <span class="icon-search"></span>
+                            </div>
+                          </a>
+                          <div class="text">
+                            <h4 class="subheading">$time</h4>
+                            <h2 class="heading"><a href="#">$language</a></h2>
+                            <p> $description </p>
+                            
+                            <p><a href="$link">$name &nbsp;| &nbsp;Hosted:$hosted</a></p>
                           </div>
-                        </a>
-                        <div class="text">
-                          <h4 class="subheading">$time</h4>
-                          <h2 class="heading"><a href="#">$language</a></h2>
-                          <p> $description </p>
-                          
-                          <p><a href="$link">$name|Hosted:$hosted</a></p>
                         </div>
-                      </div>
 DELIMITER;
+                          echo $display1;
+                        }else{
+
+                          $display2 = <<<DELIMITER
+                          <div class="block-3 d-md-flex ftco-animate" data-scrollax-parent="true">
+                          <a href="uploads/$image" class="image order-2 d-flex justify-content-center align-items-center"
+                            style="background-image: url('uploads/$image'); width:25rem; height:25rem;" data-scrollax=" properties: { translateY: '-30%'}">
+                            <div class="icon d-flex text-center justify-content-center align-items-center">
+                              <span class="icon-search"></span>
+                            </div>
+                          </a>
+                          <div class="text order-1">
+                            <h4 class="subheading">$time</h4>
+                            <h2 class="heading"><a href="#">$language</a></h2>
+                            <p>  $description  </p>
+                            <p><a href="$link">$name &nbsp;| &nbsp;Hosted:$hosted</a></p>
+                          </div>
+                        </div>
+DELIMITER;
+                          echo $display2;
+                        }
 
 
-                echo $display;
+
+                
             }
           
                 

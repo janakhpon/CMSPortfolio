@@ -23,31 +23,32 @@
           <div class="row block-9">
           <?php display_message(); ?>
 
-
-
-
-          <div class="col-md-6 pr-md-5 bg-transparent" >
-           
-            <?php validate_subscriber_registeration(); ?>
-            <form method="post">
-              <div id="mc_embed_signup_scroll" class="form-group">
-               
+            <div class="col-md-6 pr-md-5">
+              <?php validate_feedback_registeration(); ?>
+              
+              <form method="post">
                 <div class="form-group">
-                <label>Subscribe me here !</label>
-                  <input type="text" class="form-control" name="subscriber_name" placeholder="Subscriber name">
+                  <input type="text" class="form-control" name="name" placeholder="Your Name">
                 </div>
-
-                  <div class="form-group">
-                  
-                  <input type="text" class="form-control" name="subscriber_email" placeholder="Subscriber email">
-                   </div>
-
-                  <div class="form-group">
-                  <input type="submit" name="submit" value="Subscribe" class="btn btn-primary py-3 px-5">
+                <div class="form-group">
+                  <input type="text" class="form-control" name="email" placeholder="Your Email">
                 </div>
-              </div>
-            </form>
-          </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" name="subject" placeholder="Subject">
+                </div>
+                <div class="form-group">
+                  <textarea name="message" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
+                </div>
+                <div class="form-group">
+                  <input type="submit" name="submit" value="Send Message" class="btn btn-primary py-3 px-5">
+                </div>
+              </form>
+
+
+            </div>
+
+
+
 
 
             
